@@ -1,13 +1,24 @@
 import express, { Application } from 'express';
 import colors from 'colors/safe';
+import userRoutes from '../routes/users';
 
 class Server {
     private app: Application;
     private port: string;
+    private paths = {
+        users: '/api/users',
+    };
 
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8080';
+
+        // My Routes
+        this.routes();
+    }
+
+    routes() {
+        this.app.use(this.paths.users, userRoutes);
     }
 
     listen() {
