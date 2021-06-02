@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import colors from 'colors/safe';
+import cors from 'cors';
 import userRoutes from '../routes/users';
 
 class Server {
@@ -13,8 +14,19 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '8080';
 
-        // My Routes
+        this.middlewares();
         this.routes();
+    }
+
+    // TODO: Connect database
+
+    middlewares() {
+        // CORS
+        this.app.use(cors());
+        // Body reading
+        this.app.use(express.json());
+        // Public folder
+        this.app.use(express.static('public'));
     }
 
     routes() {
