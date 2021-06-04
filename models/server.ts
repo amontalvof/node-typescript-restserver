@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import colors from 'colors/safe';
 import cors from 'cors';
 import userRoutes from '../routes/users';
+import db from '../db/connection';
 
 class Server {
     private app: Application;
@@ -14,11 +15,19 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '8080';
 
+        this.dbConnection();
         this.middlewares();
         this.routes();
     }
 
-    // TODO: Connect database
+    async dbConnection() {
+        try {
+            await db.authenticate();
+            console.log(colors.cyan('Database Online!'));
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 
     middlewares() {
         // CORS
